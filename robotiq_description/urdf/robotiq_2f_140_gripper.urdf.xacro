@@ -1,13 +1,86 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://wiki.ros.org/xacro" name="robotiq_gripper">
     <!-- parameters -->
+    <xacro:arg name="sim_gazebo" default="false" />
     <xacro:arg name="use_fake_hardware" default="true" />
+    <xacro:arg name="prefix" default="" />
+    <xacro:arg name="simulation_controllers" default="" />
+    <xacro:arg name="generate_ros2_control_tag" default="true" />
 
     <!-- Import macros -->
     <xacro:include filename="$(find robotiq_description)/urdf/robotiq_2f_140_macro.urdf.xacro" />
 
     <link name="world" />
-    <xacro:robotiq_gripper name="RobotiqGripperHardwareInterface" prefix="" parent="world" use_fake_hardware="$(arg use_fake_hardware)">
+    <xacro:robotiq_gripper
+        name="RobotiqGripperHardwareInterface"
+        prefix="$(arg prefix)"
+        parent="world"
+        sim_gazebo="$(arg sim_gazebo)"
+        use_fake_hardware="$(arg use_fake_hardware)"
+        include_ros2_control="$(arg generate_ros2_control_tag)">
         <origin xyz="0 0 0" rpy="0 0 0" />
     </xacro:robotiq_gripper>
+
+    <xacro:if value="$(arg sim_gazebo)">
+        <gazebo>
+            <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+                <robot_param_node>robot_state_publisher</robot_param_node>
+                <parameters>$(arg simulation_controllers)</parameters>
+            </plugin>
+
+            <plugin filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so"
+                name="$(arg prefix)left_inner_knuckle_joint_mmmmmmmmmmmmmmmm">
+                <joint>$(arg prefix)finger_joint</joint>
+                <mimicJoint>$(arg prefix)left_inner_knuckle_joint</mimicJoint>
+                <multiplier>-1.0</multiplier>
+            </plugin>
+
+            <plugin filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so"
+                name="$(arg prefix)left_inner_finger_joint">
+                <joint>$(arg prefix)finger_joint</joint>
+                <mimicJoint>$(arg prefix)left_inner_finger_joint</mimicJoint>
+                <multiplier>1.0</multiplier>
+            </plugin>
+
+            <plugin filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so"
+                name="$(arg prefix)right_outer_knuckle_joint">
+                <joint>$(arg prefix)finger_joint</joint>
+                <mimicJoint>$(arg prefix)right_outer_knuckle_joint</mimicJoint>
+                <multiplier>-1.0</multiplier>
+            </plugin>
+
+            <plugin filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so"
+                name="$(arg prefix)right_inner_knuckle_joint">
+                <joint>$(arg prefix)finger_joint</joint>
+                <mimicJoint>$(arg prefix)right_inner_knuckle_joint</mimicJoint>
+                <multiplier>-1.0</multiplier>
+            </plugin>
+
+            <plugin filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so"
+                name="$(arg prefix)right_inner_finger_joint">
+                <joint>$(arg prefix)finger_joint</joint>
+                <mimicJoint>$(arg prefix)right_inner_finger_joint</mimicJoint>
+                <multiplier>1.0</multiplier>
+            </plugin>
+
+        </gazebo>
+
+        <gazebo reference="left_inner_knuckle">
+            <selfCollide>false</selfCollide>
+        </gazebo>
+
+        <gazebo reference="left_outer_knuckle">
+            <selfCollide>false</selfCollide>
+        </gazebo>
+
+        <gazebo reference="left_inner_finger">
+            <selfCollide>false</selfCollide>
+        </gazebo>
+        
+        <gazebo reference="left_outer_finger">
+            <selfCollide>true</selfCollide>
+        </gazebo>
+    </xacro:if>
+
+
 </robot>

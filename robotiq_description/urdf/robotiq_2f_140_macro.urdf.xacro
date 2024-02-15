@@ -56,8 +56,10 @@
         </visual>
         <collision>
           <origin xyz="0 0 0" rpy="0 0 0" />
+          <!-- NOTE: This collision stl will cause collision in Gazebo -->
           <geometry>
-            <mesh filename="file://$(find robotiq_description)/meshes/collision/2f_140/robotiq_2f_140_base_link.stl" />
+            <cylinder length="0.006" radius="0.2"/>
+            <!-- <mesh filename="file://$(find robotiq_description)/meshes/collision/2f_140/robotiq_2f_140_base_link.stl" /> -->
           </geometry>
         </collision>
       </link>

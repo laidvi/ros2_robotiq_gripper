@@ -29,7 +29,7 @@
             </plugin>
 
             <plugin filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so"
-                name="$(arg prefix)left_inner_knuckle_joint_mmmmmmmmmmmmmmmm">
+                name="$(arg prefix)left_inner_knuckle_joint">
                 <joint>$(arg prefix)finger_joint</joint>
                 <mimicJoint>$(arg prefix)left_inner_knuckle_joint</mimicJoint>
                 <multiplier>-1.0</multiplier>

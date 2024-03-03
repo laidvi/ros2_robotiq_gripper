@@ -1,7 +1,11 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
+  <xacro:property name="damping" value="50.0" />
+  <xacro:property name="friction" value="1000.0" />
+
   <xacro:macro name="outer_knuckle" params="prefix fingerprefix stroke">
+
     <link name="${prefix}${fingerprefix}_outer_knuckle">
       <inertial>
         <origin xyz="-0.000200000000003065 0.0199435877845359 0.0292245259211331" rpy="0 0 0" />
@@ -164,7 +168,7 @@
       <child link="${prefix}left_outer_knuckle" />
       <axis xyz="-1 0 0" />
       <limit lower="0" upper="0.7" velocity="2.0" effort="1000" />
-      <dynamics damping="2.0" friction="1.0" />
+      <dynamics damping="${damping}" friction="${friction}" />
     </joint>
     <xacro:finger_joints prefix="${prefix}" fingerprefix="left" reflect="1.0" />
   </xacro:macro>
@@ -177,7 +181,7 @@
       <axis xyz="1 0 0" />
       <limit lower="-0.725" upper="0.725" velocity="2.0" effort="1000" />
       <mimic joint="${prefix}finger_joint" multiplier="-1" offset="0" />
-      <dynamics damping="2.0" friction="1.0" />
+      <dynamics damping="${damping}" friction="${friction}" />
     </joint>
     <xacro:finger_joints prefix="${prefix}" fingerprefix="right" reflect="-1.0" />
   </xacro:macro>
@@ -200,7 +204,7 @@
       <axis xyz="1 0 0" />
       <limit lower="-0.8757" upper="0.8757" velocity="2.0" effort="1000" />
       <mimic joint="${prefix}finger_joint" multiplier="-1" offset="0" />
-      <dynamics damping="2.0" friction="1.0" />
+      <dynamics damping="${damping}" friction="${friction}" />
     </joint>
   </xacro:macro>
 
@@ -212,7 +216,7 @@
       <axis xyz="1 0 0" />
       <limit lower="-0.8757" upper="0.8757" velocity="2.0" effort="1000" />
       <mimic joint="${prefix}finger_joint" multiplier="1" offset="0" />
-      <dynamics damping="2.0" friction="1.0" />
+      <dynamics damping="${damping}" friction="${friction}" />
     </joint>
   </xacro:macro>
 
